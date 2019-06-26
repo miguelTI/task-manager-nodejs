@@ -2,8 +2,6 @@ const express = require('express');
 
 const server = express();
 
-server.use(express.json());
-
 const projects = [
   {
     id: 1,
@@ -13,6 +11,9 @@ const projects = [
 ];
 
 let requestNumber = 0;
+
+server.use(express.json());
+server.use(countRequest);
 
 function countRequest(req, res, next) {
   requestNumber++;
@@ -32,8 +33,6 @@ function checkIfProjectExists(req, res, next) {
   req.project = selectedProject;
   next();
 }
-
-server.use(countRequest);
 
 server.get('/projects', (req, res) => {
   return res.json(projects);
@@ -70,7 +69,6 @@ server.delete('/projects/:id', checkIfProjectExists, (req, res) => {
 });
 
 server.post('/projects/:id/tasks', checkIfProjectExists, (req, res)=> {
-  const { id } = req.params;
   const { title } = req.body;
 
   req.project.tasks.push(title);
