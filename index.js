@@ -39,7 +39,8 @@ server.get('/projects', (req, res) => {
 });
 
 server.post('/projects', (req, res) => {
-  const { id, title } = req.body;
+  const { title } = req.body;
+  const id = projects.length + 1;
   const newProjext = {
     id,
     title,
